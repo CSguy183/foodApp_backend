@@ -13,7 +13,7 @@ const updatebooking = updateElement(bookingModel);
 const getbooking = getElement(bookingModel);
 const getbookings = getElements(bookingModel);
 const Razorpay = require("razorpay");
-let { KEY_ID, KEY_SECRET } =  require("../secrets") || process.env ;
+let { KEY_ID, KEY_SECRET } =  process.env ;
 // console.log(KEY_ID);
 var razorpay = new Razorpay({
     key_id: KEY_ID,
