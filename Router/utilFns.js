@@ -40,9 +40,9 @@ module.exports.bodyChecker =
     }
 
 module.exports.isAuthorized = function (roles) {
-    console.log("I will run when the server is started")
+    // console.log("I will run when the server is started")
     // function call 
-    console.log()
+    // console.log()
     return async function (req, res,next) {
         console.log("Inner function");
         let { userId } = req;

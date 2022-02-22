@@ -1,6 +1,8 @@
 // npm init -y
 // npm i express
+require('dotenv').config();
 const express = require("express");
+const nodemon = require("nodemon");
 const fs = require("fs");
 const path = require("path");
 const cookieParser = require('cookie-parser');
