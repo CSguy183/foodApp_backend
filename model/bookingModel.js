@@ -1,13 +1,11 @@
 const mongoose = require("mongoose");
-const { PASSWORD } = process.env 
-let dbLink
-    = `mongodb+srv://admin:${PASSWORD}@cluster0.3gwfq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const {dbLink} =  require("../secrets") || process.env ; 
 mongoose.connect(dbLink, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(function (db) {
     // console.log(db);
-    console.log("connected to db")
+    console.log("connected to db 4")
 }).catch(function (err) {
     console.log("err", err);
 })

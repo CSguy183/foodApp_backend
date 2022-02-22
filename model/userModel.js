@@ -1,24 +1,11 @@
 const mongoose = require("mongoose");
-let PASSWORD;
-// deployed 
-if (process.env.PASSWORD) {
-    PASSWORD = process.env.PASSWORD;
-} else {
-    // local 
-    PASSWORD = require("../secrets").PASSWORD;
-}
-
-const validator = require("email-validator");
-let dbLink
-    = `mongodb+srv://admin:${PASSWORD}@cluster0.3gwfq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-mongoose
-    .connect(dbLink)
-    .then(function (connection) {
-        console.log("db has been conncetd")
-
-    }).catch(function (error) {
-        console.log("err", error);
-    })
+const {dbLink} =  require("../secrets") || process.env ; 
+    mongoose.connect(dbLink).then(function(db){
+        // console.log(db)
+        console.log('connected to db 1');
+    }).catch(function(err){
+        console.log(err)
+    });
 //mongoose -> data -> exact -> data -> that is required to form an entity 
 //  data completness , data validation
 // name ,email,password,confirmPassword-> min ,max,confirmPassword,required ,unique 
@@ -81,5 +68,5 @@ userSchema.methods.resetHandler = function (password, confirmPassword) {
     this.token = undefined;
 }
 // model
-let userModel = mongoose.model("PABUserModel", userSchema);
+let userModel = mongoose.model("UserModel", userSchema);
 module.exports = userModel;

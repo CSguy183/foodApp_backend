@@ -1,12 +1,10 @@
 const mongoose = require("mongoose");
-let { PASSWORD } = process.env 
 const validator = require("email-validator");
-let dbLink
-    = `mongodb+srv://admin:${PASSWORD}@cluster0.3gwfq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const {dbLink} =  require("../secrets") || process.env ; 
 mongoose
     .connect(dbLink)
     .then(function (connection) {
-        console.log("db has been conncetd")
+        console.log("db has been connceted 3")
 
     }).catch(function (error) {
         console.log("err", error);
@@ -51,5 +49,5 @@ const planSchema = new mongoose.Schema({
     averageRating: Number,
 })
 // model
-let planModel = mongoose.model("PABPlanModel", planSchema);
+let planModel = mongoose.model("PlanModel", planSchema);
 module.exports = planModel;

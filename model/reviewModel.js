@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
-const { PASSWORD } = process.env 
-let dbLink
-    = `mongodb+srv://admin:${PASSWORD}@cluster0.3gwfq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-mongoose.connect(dbLink, {
-    useNewUrlParser: true,
+const {dbLink} =  process.env || require("../secrets") ; 
 
-    useUnifiedTopology: true,
-}).then(function (db) {
+mongoose.connect(dbLink).then(function (db) {
     // console.log(db);
-    console.log("connected to db")
+    console.log("connected to db 2")
 }).catch(function (err) {
     console.log("err", err);
 })
@@ -31,13 +26,13 @@ const reviewSchema = new mongoose.Schema({
         // info
         type: mongoose.Schema.ObjectId,
         required: [true, "Review must belong to a user"],
-        ref:"PABUserModel"
+        ref:"UserModel"
     },
     plan: {
         // info
         type: mongoose.Schema.ObjectId,
         required: [true, "Review must belong to a plan "],
-        ref:"PABPlanModel"
+        ref:"PlanModel"
     }
 })
 const ReviewModel = mongoose.model("reviewModel", reviewSchema);
