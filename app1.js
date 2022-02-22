@@ -11,6 +11,11 @@ const authRouter = require('./Router/authRouter');
 const planRouter = require('./Router/planRouter');
 const reviewRouter = require('./Router/reviewRouter');
 const bookingRouter = require('./Router/bookingRouter');
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
 // Server: // route  -> request -> response/file 
 // File system// path -> interact/type -> file /folder
 // server init
@@ -26,9 +31,41 @@ const app = express();
 // always use me
 //  express json -> req.body add
 // reserve a folder only from which client can acces the files 
+
+// protection against DoS
+// only {max} queries can be made per ip address
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
+
+// to allow only specified parameters in query
+// preotection against http parameter polluting
+app.use(hpp({
+    whitelist : [
+        'select',
+        'sort',
+        'page',
+        'myQuery'
+    ]
+}));
+
+// to set http header
+// protection against packet sniffing
+app.use(helmet());
+
 app.use(express.static("Frontend_folder"));
 app.use(express.json());
 app.use(cookieParser());
+// protection against cross site atteck
+app.use(xss());
+// protection against mongoDB query injection
+app.use(mongoSanitize());
 // // function -> route  path
 // // frontend -> req -> /
 // read data storage

@@ -56,14 +56,18 @@ const userSchema = new mongoose.Schema(
         },
     })
 // hook
-userSchema.pre('save', function (next) {
+userSchema.pre('save', async function (next) {
     // do stuff
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
     this.confirmPassword = undefined;
     next();
 });
 // document method
-userSchema.methods.resetHandler = function (password, confirmPassword) {
-    this.password = password;
+userSchema.methods.resetHandler = async function (password, confirmPassword) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    // this.password = password;
     this.confirmPassword = confirmPassword;
     this.token = undefined;
 }

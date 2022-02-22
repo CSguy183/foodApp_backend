@@ -1,6 +1,7 @@
 // dependecies 
 const express = require("express");
 const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
 // deployed 
 // require -> local file
 const { JWT_SECRET } = process.env 
@@ -37,7 +38,8 @@ async function loginUser(req, res) {
         let user = await userModel.findOne({ email });
         if (user) {
             // password
-            if (user.password == password) {
+            const areSame = await bcrypt.compare(user.password, password);
+            if (areSame) {
                 let token = jwt.sign({ id: user["_id"] }, JWT_SECRET)
 
                 res.cookie("JWT", token);
