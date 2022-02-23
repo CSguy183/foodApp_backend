@@ -59,7 +59,7 @@ app.use(hpp({
 // protection against packet sniffing
 app.use(helmet());
 
-app.use(express.static("Frontend_folder"));
+app.use(express.static("Frontend_folder/build"));
 app.use(express.json());
 app.use(cookieParser());
 // protection against cross site atteck
