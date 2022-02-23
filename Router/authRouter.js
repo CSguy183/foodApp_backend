@@ -38,7 +38,8 @@ async function loginUser(req, res) {
         let user = await userModel.findOne({ email });
         if (user) {
             // password
-            const areSame = await bcrypt.compare(user.password, password);
+            const areSame =  bcrypt.compare(user.password, password);
+            // console.log(user.password, "  ", password);
             if (areSame) {
                 let token = jwt.sign({ id: user["_id"] }, JWT_SECRET)
 

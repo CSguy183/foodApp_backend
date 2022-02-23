@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const {dbLink} =   process.env ; 
+var validator = require('validator');
+const bcrypt = require("bcrypt");
     mongoose.connect(dbLink).then(function(db){
         // console.log(db)
         console.log('connected to db 1');
@@ -21,7 +23,7 @@ const userSchema = new mongoose.Schema(
             unique: true,
             validate: function () {
                 // third party library 
-                return validator.validate(this.email)
+                return validator.isEmail(this.email)
             }
         },
         password: {
